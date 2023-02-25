@@ -21,21 +21,46 @@ double test(data_t *arr, int size, sort_t sort);
 
 
 int main() {
-    int n = 0;
-    assert(scanf("%i", &n) && "Invalid array size!\n");
-
     srand(time(NULL));
 
-    data_t *arr = (data_t *) calloc(n, sizeof(data_t));
-    
-    for (int i = 0; i < n; i++) arr[i] = rand() % 100;
-    
-    printf("Time: %.2f ms\n", test(arr, n, &insertion_sort));
-    
-    for (int i = 0; i < n; i++) printf("%i ", arr[i]);
-    putchar('\n');
+    FILE *bubble_output = fopen("bubble.time", "w"), *insert_output = fopen("insertion.time", "w"), *select_output = fopen("selection.time", "w");
 
+    data_t *origin = (data_t *) calloc(1000000, sizeof(data_t));
+    data_t *arr = (data_t *) calloc(1000000, sizeof(data_t));
+
+    for (int size = 100000; size <= 1000000; size += 100000) {
+        double bubble_time = 0, insert_time = 0, select_time = 0;
+
+        printf("%i\n", size);
+
+        for (int j = 1; j <= 1; j++) {
+            for (int i = 0; i < size; i++) {
+                origin[i] = rand();
+                arr[i] = origin[i];
+            }
+
+            bubble_time += test(arr, size, &bubble_sort);
+
+            for (int i = 0; i < size; i++) arr[i] = origin[i];
+
+            insert_time += test(arr, size, &insertion_sort);
+
+            for (int i = 0; i < size; i++) arr[i] = origin[i];
+
+            select_time += test(arr, size, &selection_sort);
+        }
+
+        fprintf(bubble_output, "%.2f\n", bubble_time / 5);
+        fprintf(insert_output, "%.2f\n", insert_time / 5);
+        fprintf(select_output, "%.2f\n", select_time / 5);
+    }
+
+    free(origin);
     free(arr);
+
+    fclose(bubble_output);
+    fclose(insert_output);
+    fclose(select_output);
 
     return 0;
 }
