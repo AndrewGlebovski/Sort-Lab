@@ -65,12 +65,12 @@ int main() {
 
 
 void lsd_sort(data_t **arr, int size) {
-    for (int i = 0; i < 8; i++) *arr = counting_sort(*arr, size, i * 8);
+    for (int i = 0; i < 4; i++) *arr = counting_sort(*arr, size, i * 8);
 }
 
 
 void msd_sort(data_t **arr, int size) {
-    for (int i = 7; i >= 0; i--) *arr = counting_sort(*arr, size, i * 8);
+    for (int i = 3; i >= 0; i--) *arr = counting_sort(*arr, size, i * 8);
 }
 
 
